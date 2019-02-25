@@ -22,7 +22,6 @@ def run():
     init_rfid()
 
     #test = rfid_class()
-
     #test.run()
 
     while True:
