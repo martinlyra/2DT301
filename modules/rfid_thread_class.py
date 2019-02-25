@@ -63,8 +63,20 @@ class rfid_class(threading.Thread):
         #    self.change_mode('LISTEN')
             
     def unlock_door(self):
-        print("Door UNLOCKED")
-        GLOBAL_VARIABLES.alarmed_armed = True
+        #global alarm_armed
+        #print("Door UNLOCKED", GLOBAL_VARIABLES.alarm_armed)
+        #GLOBAL_VARIABLES.alarm_armed = True
+        #print(GLOBAL_VARIABLES.alarm_armed)
+        if GLOBAL_VARIABLES.alarm_armed:
+            print("Alarm has been unaremd!")
+            GLOBAL_VARIABLES.alarm_armed = False
+
+        else:
+            print("Alarm has been armed!")
+            GLOBAL_VARIABLES.alarm_armed = True
+            
+
+
         
     #def flash(self, color, times, delay):
     #    for i in range(0, times):

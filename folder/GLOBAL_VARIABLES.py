@@ -11,6 +11,9 @@ PIEZO_PIN = 14
 alarm_armed = False
 alarm = False
 
+#alarm_armed = 0
+#alarm       = 0
+
 def is_armed():
     return alarm_armed
 
