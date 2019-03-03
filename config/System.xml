@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<system>
+    <components>
+        <keypad>
+            <pins>
+                <pin id="L1" gpio="" io="out" />
+                <pin id="L2" gpio="" io="out" />
+                <pin id="L3" gpio="" io="out" />
+                <pin id="L4" gpio="" io="out" />
+                <pin id="R1" gpio="" io="in" trigger="RISING" />
+                <pin id="R2" gpio="" io="in" trigger="RISING" />
+                <pin id="R3" gpio="" io="in" trigger="RISING" />
+                <pin id="R4" gpio="" io="in" trigger="RISING" />
+            </pins>
+        </keypad>
+        <rfid-reader>
+            <pins>
+                <pin />
+            </pins>
+        </rfid-reader>
+        <door-magnet>
+            <pins>
+                <pin id="Trigger" gpio="" io="in" trigger="RISING" />
+            </pins>
+        </door-magnet>
+        <door-magnet>
+            <pins>
+                <pin id="Trigger" gpio="" io="in" trigger="RISING" />
+            </pins>
+        </door-magnet>
+        <speaker>
+            <pins>
+                <pin id="Enable" gpio="" io="out" />
+            </pins>
+        </speaker>
+    </components>
+    <server>
+
+    </server>
+</system>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<auth>
+    <rfid-tags default-mode="DENY">
+        <tag id="1" value="" mode="ALLOW"/>
+    </rfid-tags>
+
+    <server-users>
+        <user name="admin" pass="password" />
+    </server-users>
+</auth>

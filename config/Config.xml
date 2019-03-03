@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+    <link target="auth" file="Authorization.xml"/>
+    <link target="system" file="System.xml" />
+
+    <state>
+        <armed value="False" default="False"/>
+    </state>
+</configuration>
