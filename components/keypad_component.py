@@ -8,13 +8,15 @@ from events.events import Observe
 
 @BuilderHint("keypad")
 class KeypadComponent(BaseInputComponent):
+    _keyLayout = []
+
     def __init__(self):
         super().__init__()
 
-        self.onKeyPressed()
+    def set_key_layout(self, layout):
+        self._keyLayout = layout
 
-    @Observe("onKeyPressed")
-    def onKeyPressed(self):
+    def get_key(self):
         pass
 
 

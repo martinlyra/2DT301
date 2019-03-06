@@ -5,7 +5,11 @@
         <tag id="1" value="" mode="ALLOW"/>
     </rfid-tags>
 
-    <server-users>
+    <codes>
+        <code id="1" value="1111"/>
+    </codes>
+
+    <users>
         <user name="admin" pass="password" />
-    </server-users>
+    </users>
 </auth>

@@ -17,12 +17,20 @@ class SystemBuilder:
         component_configs = self.config.find('components')
 
         for component_config in component_configs:
-            for tuple in valid_components:
-                if component_config.tag == tuple[0]:
-                    component = tuple[1]()
-                    component.configure(component_config)
-                    components.append(component)
-                else:
-                    logging.debug("Unknown system XML tag in configuration: %s", component_config.tag)
+            result = self._find_class_by_xml(component_config.tag)
+
+            if result is not None:
+                component = result()
+                component.configure(component_config)
+                components.append(component)
+            else:
+                logging.debug("Unknown system XML tag in configuration: %s", component_config.tag)
 
         return components
+
+    def _find_class_by_xml(self, target):
+        for tuple in self.valid_components:
+            if target == tuple[0]:
+                return tuple[1]
+        return None
+

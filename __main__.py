@@ -1,8 +1,16 @@
+import logging
+
 from AlarmController import AlarmController
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='(%(threadName)-9s) %(message)s',
+                    )
+
 if __name__ == '__main__':
+    alarm = AlarmController()
     try:
-        AlarmController()
-    except KeyboardInterrupt:
-        print("Keyboard interrutpion recieved, shutting down.")
+        alarm.run()
+    except Exception:
+        pass
+    alarm.shutdown()
 

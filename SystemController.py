@@ -6,7 +6,7 @@ class SystemController:
     components = []
 
     def __init__(self, system_builder : SystemBuilder):
-        components = system_builder.buildSystem()
+        self.components = system_builder.buildSystem()
 
     def getAllOf(self, cls) -> list:
         out = []

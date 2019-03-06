@@ -34,6 +34,11 @@
                 <pin id="Enable" gpio="" io="out" />
             </pins>
         </speaker>
+        <motion-sensor>
+            <pins>
+                <pin id="" gpio="" io="in"/>
+            </pins>
+        </motion-sensor>
     </components>
     <server>
 
