@@ -1,3 +1,5 @@
+import logging
+
 import SystemBuilder
 from components.basic.base_component import BaseComponent
 
@@ -8,10 +10,16 @@ class SystemController:
     def __init__(self, system_builder : SystemBuilder):
         self.components = system_builder.buildSystem()
 
+        logging.debug("===== Registering components =====")
+        for component in self.components:
+            component.register()
+
+        logging.debug("_____ _____ _____ _____ _____ _____")
+
     def getAllOf(self, cls) -> list:
         out = []
         for component in self.components:
-            if component is cls:
+            if component.__class__ is cls:
                 out.append(component)
         return out
 

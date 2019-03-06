@@ -1,16 +1,21 @@
 import logging
 
-from AlarmController import AlarmController
 
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s',
                     )
 
-if __name__ == '__main__':
-    alarm = AlarmController()
-    try:
-        alarm.run()
-    except Exception:
-        pass
-    alarm.shutdown()
+def oldCode():
+    import project.app as app
+    
+    app.run()
 
+def newCode():
+    from AlarmController import AlarmController
+    
+    alarm = AlarmController()
+    alarm.run()
+    #alarm.shutdown()
+
+if __name__ == '__main__':
+    newCode()

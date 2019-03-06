@@ -2,7 +2,7 @@
 
 <auth>
     <rfid-tags default-mode="DENY">
-        <tag id="1" value="" mode="ALLOW"/>
+        <tag id="1" value="101861153052" mode="ALLOW"/>
     </rfid-tags>
 
     <codes>

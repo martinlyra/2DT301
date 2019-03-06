@@ -4,41 +4,46 @@
     <components>
         <keypad>
             <pins>
-                <pin id="L1" gpio="" io="out" />
-                <pin id="L2" gpio="" io="out" />
-                <pin id="L3" gpio="" io="out" />
-                <pin id="L4" gpio="" io="out" />
-                <pin id="R1" gpio="" io="in" trigger="RISING" />
-                <pin id="R2" gpio="" io="in" trigger="RISING" />
-                <pin id="R3" gpio="" io="in" trigger="RISING" />
-                <pin id="R4" gpio="" io="in" trigger="RISING" />
+                <pin id="L1" gpio="31" io="out" state="HIGH" />
+                <pin id="L2" gpio="33" io="out" state="HIGH" />
+                <pin id="L3" gpio="35" io="out" state="HIGH" />
+                <pin id="L4" gpio="37" io="out" state="HIGH" />
+                <pin id="R1" gpio="32" io="in" trigger="RISING" />
+                <pin id="R2" gpio="36" io="in" trigger="RISING" />
+                <pin id="R3" gpio="38" io="in" trigger="RISING" />
+                <pin id="R4" gpio="40" io="in" trigger="RISING" />
             </pins>
         </keypad>
         <rfid-reader>
             <pins>
-                <pin />
+                22 19 21 23 24
             </pins>
         </rfid-reader>
         <door-magnet>
             <pins>
-                <pin id="Trigger" gpio="" io="in" trigger="RISING" />
+                <pin id="Trigger" gpio="3" io="in" trigger="RISING" />
             </pins>
         </door-magnet>
         <door-magnet>
             <pins>
-                <pin id="Trigger" gpio="" io="in" trigger="RISING" />
+                <pin id="Trigger" gpio="5" io="in" trigger="RISING" />
             </pins>
         </door-magnet>
         <speaker>
             <pins>
-                <pin id="Enable" gpio="" io="out" />
+                <pin id="Enable" gpio="11" io="out" />
             </pins>
         </speaker>
         <motion-sensor>
             <pins>
-                <pin id="" gpio="" io="in"/>
+                <pin id="" gpio="7" io="in"/>
             </pins>
         </motion-sensor>
+	<sound-sensor>
+		<pins>
+			<pin id="" gpio="13" io="in"/>
+		</pins>
+	</sound-sensor>
     </components>
     <server>
 

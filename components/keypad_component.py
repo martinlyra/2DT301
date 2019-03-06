@@ -13,10 +13,14 @@ class KeypadComponent(BaseInputComponent):
     def __init__(self):
         super().__init__()
 
+    def on_trigger(self, channel):
+        super().on_trigger(channel)
+        self._get_key(channel)
+
+    def _get_key(self, channel):
+        pass
+
     def set_key_layout(self, layout):
         self._keyLayout = layout
-
-    def get_key(self):
-        pass
 
 

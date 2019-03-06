@@ -1,7 +1,7 @@
 from components.basic.ComponentBuilder import BuilderHint
-from components.basic.base_sensor_component import BaseSensorComponent
+from components.basic.base_input_component import BaseInputComponent
 
 
 @BuilderHint("motion-sensor")
-class MotionSensorComponent(BaseSensorComponent):
+class MotionSensorComponent(BaseInputComponent):
     pass

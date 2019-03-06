@@ -1,7 +1,9 @@
 from components.basic.ComponentBuilder import BuilderHint
-from components.basic.base_sensor_component import BaseSensorComponent
+from components.basic.base_input_component import BaseInputComponent
 
 
 @BuilderHint("door-magnet")
-class DoorMagnetComponent(BaseSensorComponent):
-    pass
+class DoorMagnetComponent(BaseInputComponent):
+
+    def on_trigger(self, channel):
+        super().on_trigger(channel)

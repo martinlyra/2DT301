@@ -1,93 +1,14 @@
 import logging
+import time
 from xml.etree import ElementTree
 
+from AuthController import AuthController
 from InterfaceController import InterfaceController
 from SystemController import SystemController
 from components.keypad_component import KeypadComponent
 from ConfigController import ConfigController
 from SystemBuilder import SystemBuilder
 from components.rfid_reader_component import RfidReaderComponent
-
-
-class TagInfo:
-    tagId = ''
-    value = ''
-    user = ''
-    mode = "DENY"
-
-    def __init__(self, tid, tval, tmode, tuser=None):
-        self.tagId = tid
-        self.value = tval
-        self.user = tuser
-        self.mode = tmode
-
-
-
-class CodeInfo:
-    codeId = ''
-    value = ''
-
-    def __init__(self, cid, cval):
-        self.codeId = cid
-        self.value = cval
-
-
-class UserInfo:
-    username = ''
-    password = ''
-    real_name = ''
-
-
-class AuthController(object):
-    tags = []
-    codes = []
-    users = []
-
-    def configure(self, config_tree: ElementTree):
-        self._setup_tags(config_tree.find('rfid-tags'))
-        self._setup_codes(config_tree.find('codes'))
-        self._setup_users(config_tree.find('users'))
-
-    def _setup_tags(self, config_tree: ElementTree):
-        tags = config_tree.findall('tag')
-
-        count = 0
-        for tag in tags:
-            tid = tag.get('id')
-            tval = tag.get('value')
-            tmode = tag.get('mode')
-            self.tags.append(TagInfo(tid, tval, tmode))
-            count += 1
-
-        logging.debug("Loaded %i RFID tags", count)
-
-    def _setup_codes(self, config_tree: ElementTree):
-        codes = config_tree.findall('code')
-
-        count = 0
-        for code in codes:
-            cid = code.get('id')
-            cval = code.get('value')
-            self.codes.append(CodeInfo(cid, cval))
-            count += 1
-
-        logging.debug("Loaded %i manual codes", count)
-
-    def _setup_users(self, config_tree: ElementTree):
-        pass
-
-    def authenticate(self):
-        pass    # TODO: add authentication for RFID, manual code, and remote activation via web
-
-    def authenticate_tag(self):
-        pass
-
-    def authenticate_code(self):
-        pass
-
-    def authenticate_user(self):
-        pass
-
 
 class AlarmController(object):
     authController = None       # type: AuthController
@@ -106,18 +27,28 @@ class AlarmController(object):
         self.systemController = SystemController(SystemBuilder(ConfigController.config.systemConfig))
 
         # Set up Authentication
-        self.authController = AuthController()
+        self.authController = AuthController(self)
         self.authController.configure(self.configController.config.authConfig)
+        self.authController.register_accept_handler(self.on_accepted_handler)
+        self.authController.register_deny_handler(self.on_denied_handler)
 
         # Set up the user interface
         self.interfaceController = InterfaceController()
 
-        self.interfaceController.rfidReader = self.systemController.getFirstOf(RfidReaderComponent)
-        self.interfaceController.keypad = self.systemController.getFirstOf(KeypadComponent)
+        self.interfaceController.set_rfid(self.systemController.getFirstOf(RfidReaderComponent))
+        self.interfaceController.set_keypad(self.systemController.getFirstOf(KeypadComponent))
+        
+        self.interfaceController.register_rfid_read_handler(self.handle_rfid_tag)
 
+        print(len(self.systemController.components),"components built from system configuration.")
         for component in self.systemController.components:
-            print(component.__class__.__name__, component)
+            print('\t',component.__class__.__name__)
 
+
+    #
+    # Alarm functions
+    #
+    
     def is_armed(self) -> bool:
         return self._armed
 
@@ -125,20 +56,40 @@ class AlarmController(object):
         self._armed = not self._armed
         return self._armed
 
-    def on_verified_handler(self, id, method):
+    def on_accepted_handler(self, id, method):
         self.toggle_armed()
         logging.debug("Alarm has been turned %s by %s using %s.",
                       "on" if self.is_armed() else "off",
                       id, method)
 
-    def run(self):
-        self.interfaceController.run()
+    def on_denied_handler(self, id, method):
+        logging.debug("Authentication failed for %s using %s.", id, method)
 
+    def handle_rfid_tag(self, id):
+        self.authController.authenticate_tag(id)
+
+
+    #
+    # Program flow functions
+    #
+    
+    def run(self):
+        logging.debug("====== STARTING RUNTIME LOOP ======")
+        
+        self.interfaceController.start()
+
+        #print("Starting to run.")
         while not self.is_exiting():
             try:
-                pass
+                #logging.debug("Run.")
+                time.sleep(1)
+                #pass
             except KeyboardInterrupt:
+                logging.debug("Interrupted by keyboard. Exiting.")
                 self._exiting = True
+                self.interfaceController.do_exit = True
+            except Exception as ex:
+                print(ex)
 
         self.shutdown()
 
