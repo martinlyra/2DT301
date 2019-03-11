@@ -37,6 +37,7 @@ class AlarmController(object):
 
         self.interfaceController.set_rfid(self.systemController.getFirstOf(RfidReaderComponent))
         self.interfaceController.set_keypad(self.systemController.getFirstOf(KeypadComponent))
+        self.interfaceController.setup_server(self.configController.config.systemConfig.find('server'))
         
         self.interfaceController.register_rfid_read_handler(self.handle_rfid_tag)
 

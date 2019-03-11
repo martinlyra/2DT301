@@ -1,17 +1,19 @@
+from threading import Thread
+
 from http.server import HTTPServer, SimpleHTTPRequestHandler, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from xml.etree import ElementTree
 
 
 class ThreadingHttpServer(ThreadingMixIn, HTTPServer):
-    def __init__(self, master):
+    def __init__(self, address, handler_class, master):
         self.master = master
-        super().__init__()
+        super().__init__(address, handler_class)
 
 
 class WebServerConfig(object):
     def __init__(self, config_tree : ElementTree):
-        self.port = config_tree.find('port').text
+        self.port = int(config_tree.find('port').text)
 
 
 class WebHttpRequestHandler(BaseHTTPRequestHandler):
@@ -23,16 +25,17 @@ class WebHttpRequestHandler(BaseHTTPRequestHandler):
         pass
 
 
-class HttpWebServer(object):
+class HttpWebServer(Thread):
     httpHandler = SimpleHTTPRequestHandler
     httpSocket = None
 
     serverConfig = None
 
     def __init__(self, config_tree : ElementTree):
+        super().__init__()
         self.serverConfig = WebServerConfig(config_tree)
 
-        self.httpSocket = ThreadingHttpServer(("", self.serverConfig.port), self.httpHandler)
+        self.httpSocket = ThreadingHttpServer(("", self.serverConfig.port), self.httpHandler, self)
 
     def check_user(self):
         pass

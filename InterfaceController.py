@@ -25,6 +25,11 @@ class InterfaceController(Thread):
 
     def set_keypad(self, keypad):
         self.keypad = keypad
+        self.keypad.set_key_layout(
+            [['7','8','9','A'],
+             ['4','5','6','B'],
+             ['1','2','3','C'],
+             ['*','0','#','D']])
 
     def setup_server(self, config_tree : ElementTree):
         self.webServer = HttpWebServer(config_tree)
@@ -38,13 +43,12 @@ class InterfaceController(Thread):
                 handler(id)
 
     def run(self):
-        self.webServer.run()
+        self.webServer.start()
 
         while not self.is_exiting():
             #logging.debug("Interface running.")
             self.rfidReader.scan()
-            self.keypad.scan()
-            time.sleep(1)
+            time.sleep(0.5)
 
         self.shutdown()
 

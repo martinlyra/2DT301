@@ -4,14 +4,14 @@
     <components>
         <keypad>
             <pins>
-                <pin id="L1" gpio="31" io="out" state="LOW" />
-                <pin id="L2" gpio="33" io="out" state="LOW" />
-                <pin id="L3" gpio="35" io="out" state="LOW" />
-                <pin id="L4" gpio="37" io="out" state="LOW" />
-                <pin id="R1" gpio="32" io="in" trigger="RISING" />
-                <pin id="R2" gpio="36" io="in" trigger="RISING" />
-                <pin id="R3" gpio="38" io="in" trigger="RISING" />
-                <pin id="R4" gpio="40" io="in" trigger="RISING" />
+                <pin id="L1" gpio="40" io="out" state="LOW" />
+                <pin id="L2" gpio="38" io="out" state="LOW" />
+                <pin id="L3" gpio="36" io="out" state="LOW" />
+                <pin id="L4" gpio="32" io="out" state="LOW" />
+                <pin id="R1" gpio="37" io="in" pud="up" trigger="FALLING" bouncetime="20" />
+                <pin id="R2" gpio="35" io="in" pud="up" trigger="FALLING" bouncetime="20" />
+                <pin id="R3" gpio="33" io="in" pud="up" trigger="FALLING" bouncetime="20" />
+                <pin id="R4" gpio="31" io="in" pud="up" trigger="FALLING" bouncetime="20" />
             </pins>
         </keypad>
         <rfid-reader>
