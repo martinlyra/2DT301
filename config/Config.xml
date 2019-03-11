@@ -3,6 +3,14 @@
 <configuration>
     <link target="auth" file="Authorization.xml"/>
     <link target="system" file="System.xml" />
+    
+    <logging directory="log/">
+
+    </logging>
+
+    <media directory="log/media/" >
+
+    </media>
 
     <state>
         <armed value="False" default="False"/>

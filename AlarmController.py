@@ -10,6 +10,9 @@ from ConfigController import ConfigController
 from SystemBuilder import SystemBuilder
 from components.rfid_reader_component import RfidReaderComponent
 
+from CameraController import CameraController
+from MediaController import MediaController
+
 class AlarmController(object):
     authController = None       # type: AuthController
     configController = None     # type: ConfigController
@@ -32,6 +35,11 @@ class AlarmController(object):
         self.sound = self.systemController.get_by_name('SPK')
         self.armedLight = self.systemController.get_by_name('LED0')
         self.alarmLight = self.systemController.get_by_name('LED1')
+
+        # Set up Camera + system for images
+        self.mediaController = MediaController(
+            self.configController.config.primaryConfig.find('media'))
+        self.cameraController = CameraController(self.mediaController)
 
         # Set up Authentication
         self.authController = AuthController(self)
@@ -67,6 +75,7 @@ class AlarmController(object):
 
     def on_accepted_handler(self, id, method):
         self.toggle_armed()
+        self.cameraController.take_still()
         logging.debug("Alarm has been turned %s by %s using %s.",
                       "on" if self.is_armed() else "off",
                       id, method)
@@ -74,6 +83,10 @@ class AlarmController(object):
 
     def on_denied_handler(self, id, method):
         logging.debug("Authentication failed for %s using %s.", id, method)
+        self.cameraController.take_still()
+
+    def handle_sensor_trigger(self, component):
+        pass
 
     def handle_keypad_code(self, code):
         self.authController.authenticate_code(code)
