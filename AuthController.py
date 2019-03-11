@@ -133,8 +133,8 @@ class AuthController(object):
         self._on_auth_deny(val, "Tag")
 
     def authenticate_code(self, code):
-        for code in self.code:
-            if code == code.value:
+        for codeobj in self.codes:
+            if code == codeobj.value:
                 self._on_auth_accept(code, "Code")
                 return
         self._on_auth_deny(code, "code")

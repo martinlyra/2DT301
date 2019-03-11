@@ -37,8 +37,8 @@ class KeypadComponent(BaseInputComponent):
     def register_on_key_handler(self, handler):
         self._on_key_handlers.append(handler)
 
-    def on_key(self, key)
-        for handler in _on_key_handlers:
+    def on_key(self, key):
+        for handler in self._on_key_handlers:
             handler(key)
 
     def _scan_for_intersection(self, col):
@@ -65,7 +65,6 @@ class KeypadComponent(BaseInputComponent):
     def _get_axis_num(self, axis_list, target):
         num = 0
         for pin in axis_list:
-            print (pin.pinGpio, target)
             if pin.pinGpio == int(target):
                 return num
             else:

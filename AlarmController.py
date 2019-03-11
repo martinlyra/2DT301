@@ -16,6 +16,10 @@ class AlarmController(object):
     systemController = None     # type: SystemController
     interfaceController = None  # type: InterfaceContoller
 
+    sound = None
+    armedLight = None
+    alarmLight = None
+
     _exiting = False            # type: bool
     _armed = False              # type: bool
 
@@ -25,6 +29,9 @@ class AlarmController(object):
 
         # Set up System
         self.systemController = SystemController(SystemBuilder(ConfigController.config.systemConfig))
+        self.sound = self.systemController.get_by_name('SPK')
+        self.armedLight = self.systemController.get_by_name('LED0')
+        self.alarmLight = self.systemController.get_by_name('LED1')
 
         # Set up Authentication
         self.authController = AuthController(self)
@@ -40,6 +47,7 @@ class AlarmController(object):
         self.interfaceController.setup_server(self.configController.config.systemConfig.find('server'))
         
         self.interfaceController.register_rfid_read_handler(self.handle_rfid_tag)
+        self.interfaceController.register_keypad_read_handler(self.handle_keypad_code)
 
         print(len(self.systemController.components),"components built from system configuration.")
         for component in self.systemController.components:
@@ -54,6 +62,7 @@ class AlarmController(object):
 
     def toggle_armed(self):
         self._armed = not self._armed
+        self.armedLight.toggle()
         return self._armed
 
     def on_accepted_handler(self, id, method):
@@ -61,9 +70,13 @@ class AlarmController(object):
         logging.debug("Alarm has been turned %s by %s using %s.",
                       "on" if self.is_armed() else "off",
                       id, method)
+        self.sound.beep_short()
 
     def on_denied_handler(self, id, method):
         logging.debug("Authentication failed for %s using %s.", id, method)
+
+    def handle_keypad_code(self, code):
+        self.authController.authenticate_code(code)
 
     def handle_rfid_tag(self, id):
         self.authController.authenticate_tag(id)

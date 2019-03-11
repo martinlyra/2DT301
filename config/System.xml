@@ -29,11 +29,21 @@
                 <pin id="Trigger" gpio="5" io="in" trigger="RISING" />
             </pins>
         </door-magnet>
-        <speaker>
+        <speaker name="SPK">
             <pins>
                 <pin id="Enable" gpio="11" io="out" />
             </pins>
         </speaker>
+	<light name="LED0">
+            <pins>
+                <pin id="Enable" gpio="29" io="out" />
+            </pins>
+        </light>
+	<light name="LED1">
+            <pins>
+                <pin id="Enable" gpio="15" io="out" />
+            </pins>
+        </light>
         <motion-sensor>
             <pins>
                 <pin id="" gpio="7" io="in"/>

@@ -19,6 +19,8 @@ class InterfaceController(Thread):
     _rfid_read_handlers = []    # type: list
     _keypad_read_handlers = []  # type: list
 
+    _key_buffer = ''
+
     def set_rfid(self, rfid):
         self.rfidReader = rfid
         self.rfidReader.register_on_read_tag_callback(self.on_rfid_read)
@@ -30,17 +32,38 @@ class InterfaceController(Thread):
              ['4','5','6','B'],
              ['1','2','3','C'],
              ['*','0','#','D']])
+        self.keypad.register_on_key_handler(self.on_key_press)
 
     def setup_server(self, config_tree : ElementTree):
         self.webServer = HttpWebServer(config_tree)
 
+    def register_keypad_read_handler(self, handler):
+        self._keypad_read_handlers.append(handler)
+
     def register_rfid_read_handler(self, handler):
         self._rfid_read_handlers.append(handler)
+
+    def on_keypad_read(self, content):
+        if content is not None:
+            for handler in self._keypad_read_handlers:
+                handler(content)
 
     def on_rfid_read(self, id):
         if not id is None:
             for handler in self._rfid_read_handlers:
                 handler(id)
+
+    def on_key_press(self, key):
+        if key == '#':
+            print('Code submitted: ', self._key_buffer)
+            self.on_keypad_read(self._key_buffer)
+            self._key_buffer = ''
+        elif key == '*':
+            self._key_buffer = ''
+            print('Code input cleared!')
+        else:
+            self._key_buffer += key
+            print(self._key_buffer)
 
     def run(self):
         self.webServer.start()

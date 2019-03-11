@@ -11,9 +11,11 @@ from components.basic.pin import Pin
 class BaseComponent(object):
 
     def __init__(self):
+        self.name = ''
         self.pins = []
 
     def configure(self, config_tree: ElementTree):
+        self.name = config_tree.get('name')
         config_pins = config_tree.find('pins')
         pins = config_pins.findall('pin')
         logging.debug("Found %i pins for %s.", len(pins), self.__class__.__name__)

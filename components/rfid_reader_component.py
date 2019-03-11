@@ -15,7 +15,7 @@ class RfidReaderComponent(BaseComponent):
         id = self.reader.read_id_no_block()
 
         if id is not None:
-            self.on_read_tag(self, id)
+            self.on_read_tag(id)
 
     def on_read_tag(self, id):
         for handler in self.on_read_tag_handlers:

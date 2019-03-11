@@ -3,6 +3,7 @@ import components.basic
 import components.camera_component
 import components.door_magnet_component
 import components.keypad_component
+import components.light_component
 import components.motion_sensor_component
 import components.rfid_reader_component
 import components.sound_sensor_component

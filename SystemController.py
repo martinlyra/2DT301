@@ -16,6 +16,11 @@ class SystemController:
 
         logging.debug("_____ _____ _____ _____ _____ _____")
 
+    def get_by_name(self, name):
+        for component in self.components:
+            if component.name == name:
+                return component
+
     def getAllOf(self, cls) -> list:
         out = []
         for component in self.components:
