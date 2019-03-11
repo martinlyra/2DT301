@@ -44,7 +44,6 @@ class AlarmController(object):
         for component in self.systemController.components:
             print('\t',component.__class__.__name__)
 
-
     #
     # Alarm functions
     #
@@ -68,22 +67,21 @@ class AlarmController(object):
     def handle_rfid_tag(self, id):
         self.authController.authenticate_tag(id)
 
-
     #
     # Program flow functions
     #
-    
+
     def run(self):
         logging.debug("====== STARTING RUNTIME LOOP ======")
         
         self.interfaceController.start()
 
-        #print("Starting to run.")
+        # print("Starting to run.")
         while not self.is_exiting():
             try:
-                #logging.debug("Run.")
+                # logging.debug("Run.")
                 time.sleep(1)
-                #pass
+                # pass
             except KeyboardInterrupt:
                 logging.debug("Interrupted by keyboard. Exiting.")
                 self._exiting = True

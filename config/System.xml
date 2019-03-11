@@ -4,10 +4,10 @@
     <components>
         <keypad>
             <pins>
-                <pin id="L1" gpio="31" io="out" state="HIGH" />
-                <pin id="L2" gpio="33" io="out" state="HIGH" />
-                <pin id="L3" gpio="35" io="out" state="HIGH" />
-                <pin id="L4" gpio="37" io="out" state="HIGH" />
+                <pin id="L1" gpio="31" io="out" state="LOW" />
+                <pin id="L2" gpio="33" io="out" state="LOW" />
+                <pin id="L3" gpio="35" io="out" state="LOW" />
+                <pin id="L4" gpio="37" io="out" state="LOW" />
                 <pin id="R1" gpio="32" io="in" trigger="RISING" />
                 <pin id="R2" gpio="36" io="in" trigger="RISING" />
                 <pin id="R3" gpio="38" io="in" trigger="RISING" />
@@ -45,7 +45,8 @@
 		</pins>
 	</sound-sensor>
     </components>
-    <server>
 
+    <server>
+        <port>2000</port>
     </server>
 </system>

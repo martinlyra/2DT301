@@ -3,6 +3,7 @@ from components.basic.base_component import BaseComponent
 
 from MFRC522python.SimpleMFRC522 import SimpleMFRC522
 
+
 @BuilderHint("rfid-reader")
 class RfidReaderComponent(BaseComponent):
 
@@ -10,8 +11,11 @@ class RfidReaderComponent(BaseComponent):
 
     on_read_tag_handlers = []
     
-    def handle_read(self):
+    def scan(self):
         id = self.reader.read_id_no_block()
+
+        if id is not None:
+            self.on_read_tag(self, id)
 
     def on_read_tag(self, id):
         for handler in self.on_read_tag_handlers:

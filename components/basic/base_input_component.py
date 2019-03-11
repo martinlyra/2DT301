@@ -2,6 +2,7 @@ import logging
 
 from components.basic.base_component import BaseComponent
 
+
 class BaseInputComponent(BaseComponent):
     trigger_handlers = []
     
@@ -9,7 +10,10 @@ class BaseInputComponent(BaseComponent):
         super().__init__()
 
     def on_trigger(self, channel):
-        print(self.__class__.__name__,"triggered! (Channel:", channel, ")")
+        print(self.__class__.__name__, "triggered! (Channel:", channel, ")")
+
+    def scan(self):
+        pass
 
     def register(self):
         super().register()
