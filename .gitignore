@@ -1,0 +1,14 @@
+log/*
+
+*.pyc
+
+__pycache__/
+.local/*
+.pp_backup/
+.idea/*
+
+.bashrc
+.bash_logout
+.xsession-errors
+.profile
+.Xauthority
