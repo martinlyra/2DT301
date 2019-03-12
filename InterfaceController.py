@@ -71,7 +71,7 @@ class InterfaceController(Thread):
         while not self.is_exiting():
             #logging.debug("Interface running.")
             self.rfidReader.scan()
-            time.sleep(0.5)
+            time.sleep(0.25)
 
         self.shutdown()
 

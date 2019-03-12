@@ -2,10 +2,13 @@ import logging
 
 import SystemBuilder
 from components.basic.base_component import BaseComponent
+from components.basic.base_input_component import BaseInputComponent
 
 
 class SystemController:
     components = []
+
+    _trigger_handlers = []
 
     def __init__(self, system_builder : SystemBuilder):
         self.components = system_builder.buildSystem()
@@ -13,6 +16,8 @@ class SystemController:
         logging.debug("===== Registering components =====")
         for component in self.components:
             component.register()
+
+        self._subscribeToAll()
 
         logging.debug("_____ _____ _____ _____ _____ _____")
 
@@ -38,4 +43,17 @@ class SystemController:
     def cleanup(self):
         for component in self.components:
             component.unregister()
+
+    def register_system_triggered_handler(self, handler):
+        self._trigger_handlers.append(handler)
+    
+    def onSystemTriggered(self, component):
+        for handler in self._trigger_handlers:
+            handler(component)
+
+    def _subscribeToAll(self):
+        for component in self.components:
+            if isinstance(component, BaseInputComponent):
+                component.register_trigger_handler(self.onSystemTriggered)
+                #print("Registered trigger handler to", component.__class__)
 

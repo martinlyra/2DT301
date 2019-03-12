@@ -4,13 +4,17 @@ from components.basic.base_component import BaseComponent
 
 
 class BaseInputComponent(BaseComponent):
-    trigger_handlers = []
-    
     def __init__(self):
         super().__init__()
+        self._trigger_handlers = []
 
     def on_trigger(self, channel):
-        print(self.__class__.__name__, "triggered! (Channel:", channel, ")")
+        logging.debug("%s triggered! (Channel '%i')", self.__class__.__name__, channel)
+        for handler in self._trigger_handlers:
+            handler(self)
+
+    def register_trigger_handler(self, handler):
+        self._trigger_handlers.append(handler)
 
     def scan(self):
         pass

@@ -8,11 +8,14 @@ from components.basic.base_component import BaseComponent
 class LightComponent(BaseComponent):
     state = 0
     
-    def toggle(self):
-        if self.state == 0:
-            self.state = 1
+    def toggle(self, override=None):
+        if override is None:
+            if self.state == 0:
+                self.state = 1
+            else:
+                self.state = 0
         else:
-            self.state = 0
+            self.state = override
             
         for pin in self.pins:
             if pin.is_output():

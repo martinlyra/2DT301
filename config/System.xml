@@ -23,11 +23,17 @@
             <pins>
                 <pin id="Trigger" gpio="3" io="in" trigger="RISING" />
             </pins>
+	    <extra>
+		<alarm-type value="trigger" />
+            </extra>
         </door-magnet>
         <door-magnet>
             <pins>
                 <pin id="Trigger" gpio="5" io="in" trigger="RISING" />
             </pins>
+	    <extra>
+		<alarm-type value="trigger" />
+            </extra>
         </door-magnet>
         <speaker name="SPK">
             <pins>
@@ -48,11 +54,17 @@
             <pins>
                 <pin id="" gpio="7" io="in"/>
             </pins>
+	    <extra>
+		<alarm-type value="trigger" />
+            </extra>
         </motion-sensor>
 	<sound-sensor>
 		<pins>
 			<pin id="" gpio="13" io="in"/>
 		</pins>
+	    <extra>
+		<alarm-type value="trigger" />
+            </extra>
 	</sound-sensor>
     </components>
 

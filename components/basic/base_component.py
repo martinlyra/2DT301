@@ -13,14 +13,26 @@ class BaseComponent(object):
     def __init__(self):
         self.name = ''
         self.pins = []
+        self.extra = None
 
     def configure(self, config_tree: ElementTree):
         self.name = config_tree.get('name')
         config_pins = config_tree.find('pins')
         pins = config_pins.findall('pin')
+        self.extra = config_tree.find('extra')
         logging.debug("Found %i pins for %s.", len(pins), self.__class__.__name__)
         for cpin in pins:
             self.pins.append(Pin(cpin))
+
+        self._post_config()
+
+    def _post_config(self):
+        pass
+
+    def get_pin(self, name : str):
+        for pin in self.pins:
+            if pin.pinId == name:
+                return pin
 
     def register(self):
         for pin in self.pins:

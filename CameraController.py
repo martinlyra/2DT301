@@ -1,5 +1,6 @@
 from picamera import PiCamera
 from datetime import datetime
+from MoreThreading import Threaded
 import time
 import logging
 
@@ -24,6 +25,7 @@ class CameraController(object):
         self.media_controller = media_controller
         self.destination = self.media_controller.folder
 
+    @Threaded
     def take_still(self, description : str = ''):
         timestamp = datetime.now()
 

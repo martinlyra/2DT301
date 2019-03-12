@@ -2,6 +2,7 @@ import logging
 import time
 from xml.etree import ElementTree
 
+from armed_behaviour import NormalArmedBehaviour
 from AuthController import AuthController
 from InterfaceController import InterfaceController
 from SystemController import SystemController
@@ -13,11 +14,14 @@ from components.rfid_reader_component import RfidReaderComponent
 from CameraController import CameraController
 from MediaController import MediaController
 
+
 class AlarmController(object):
     authController = None       # type: AuthController
     configController = None     # type: ConfigController
     systemController = None     # type: SystemController
     interfaceController = None  # type: InterfaceContoller
+
+    behaviour = None            # type: AlarmArmedBehaviour
 
     sound = None
     armedLight = None
@@ -35,6 +39,8 @@ class AlarmController(object):
         self.sound = self.systemController.get_by_name('SPK')
         self.armedLight = self.systemController.get_by_name('LED0')
         self.alarmLight = self.systemController.get_by_name('LED1')
+
+        self.systemController.register_system_triggered_handler(self.handle_sensor_trigger)
 
         # Set up Camera + system for images
         self.mediaController = MediaController(
@@ -61,6 +67,9 @@ class AlarmController(object):
         for component in self.systemController.components:
             print('\t',component.__class__.__name__)
 
+        # Set up Behaviour
+        self.behaviour = NormalArmedBehaviour(self)
+
     #
     # Alarm functions
     #
@@ -71,22 +80,41 @@ class AlarmController(object):
     def toggle_armed(self):
         self._armed = not self._armed
         self.armedLight.toggle()
+        if self._armed is False:
+            self.behaviour.on_accepted()
         return self._armed
 
     def on_accepted_handler(self, id, method):
         self.toggle_armed()
-        self.cameraController.take_still()
         logging.debug("Alarm has been turned %s by %s using %s.",
                       "on" if self.is_armed() else "off",
                       id, method)
-        self.sound.beep_short()
+        self.sound.single_beep(1, 5000)
+        self.cameraController.take_still()
 
     def on_denied_handler(self, id, method):
         logging.debug("Authentication failed for %s using %s.", id, method)
+        self.sound.single_beep(0.2, 5000)
+        time.sleep(0.4)
+        self.sound.single_beep(0.2, 5000)
         self.cameraController.take_still()
 
     def handle_sensor_trigger(self, component):
-        pass
+        alarm_type = component.extra.find('alarm-type')
+
+        if alarm_type is None:
+            return
+        
+        if self.is_armed():
+            at = str(alarm_type.get('value')).lower()
+            if at == "trigger":
+                if self.behaviour.is_triggered() is not True:
+                    self.behaviour.on_trigger()
+                    logging.debug("Alarm triggered!")
+            elif at == "alarm":
+                if self.behavious.is_sounding() is not True:
+                    self.behavious.on_alarm()
+                    logging.debug("Alarm sounding!")
 
     def handle_keypad_code(self, code):
         self.authController.authenticate_code(code)
@@ -100,14 +128,15 @@ class AlarmController(object):
 
     def run(self):
         logging.debug("====== STARTING RUNTIME LOOP ======")
+        self.sound.single_beep(0.10, 2500)
         
         self.interfaceController.start()
 
         # print("Starting to run.")
         while not self.is_exiting():
-            try:
-                # logging.debug("Run.")
-                time.sleep(1)
+            try:                
+                self.behaviour.tick()
+                time.sleep(0.01)
                 # pass
             except KeyboardInterrupt:
                 logging.debug("Interrupted by keyboard. Exiting.")
