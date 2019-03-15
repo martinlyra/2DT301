@@ -71,4 +71,12 @@
     <server>
         <port>2000</port>
     </server>
+
+    <email>
+	<gateway address="smtp.gmail.com" port="465" />
+	<credentials>
+		<username value="" />
+		<password value="" />
+	</credentials>
+    </email>
 </system>

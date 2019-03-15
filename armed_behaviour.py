@@ -27,6 +27,8 @@ class NormalArmedBehaviour(object):
         self._sounding = True
         self.master.alarmLight.toggle(1)
 
+        self.master.interfaceController.messenger.send_mail()
+
     def on_accepted(self):
         self._triggered = False
         self._sounding = False

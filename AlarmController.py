@@ -59,6 +59,7 @@ class AlarmController(object):
         self.interfaceController.set_rfid(self.systemController.getFirstOf(RfidReaderComponent))
         self.interfaceController.set_keypad(self.systemController.getFirstOf(KeypadComponent))
         self.interfaceController.setup_server(self.configController.config.systemConfig.find('server'))
+        self.interfaceController.setup_messenger(self.configController.config.systemConfig.find('email'))
         
         self.interfaceController.register_rfid_read_handler(self.handle_rfid_tag)
         self.interfaceController.register_keypad_read_handler(self.handle_keypad_code)

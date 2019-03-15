@@ -4,6 +4,7 @@ import logging
 import time
 from xml.etree import ElementTree
 
+from SmtpMessenger import SmtpMessenger
 from HttpWebServer import HttpWebServer
 from components.keypad_component import KeypadComponent
 from components.rfid_reader_component import RfidReaderComponent
@@ -13,6 +14,7 @@ class InterfaceController(Thread):
     rfidReader = None           # type: RfidReaderComponent
     keypad = None               # type: KeypadComponent
     webServer = None            # type: HttpWebServer
+    messenger = None            # type: SmtpMessenger
 
     do_exit = False             # type: bool
 
@@ -36,6 +38,9 @@ class InterfaceController(Thread):
 
     def setup_server(self, config_tree : ElementTree):
         self.webServer = HttpWebServer(config_tree)
+
+    def setup_messenger(self, config_tree : ElementTree):
+        self.messenger = SmtpMessenger(config_tree)
 
     def register_keypad_read_handler(self, handler):
         self._keypad_read_handlers.append(handler)
