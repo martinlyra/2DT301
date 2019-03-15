@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import time
 import logging
 
 class NormalArmedBehaviour(object):
@@ -65,4 +66,5 @@ class NormalArmedBehaviour(object):
             self.on_alarm()
 
     def _sounding_tick(self):
-        self.master.sound.single_beep(0.5, 2500)
+        self.master.sound.single_beep(0.5, 2500).join()
+        time.sleep(0.25)
